@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DaudzXransom</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: url('https://files.catbox.moe/wfwqn4.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 3rem;
+      backdrop-filter: blur(12px);
+      background: rgba(0, 0, 0, 0.6);
+      max-width: 400px;
+      margin: 5rem auto;
+      border-radius: 20px;
+      box-shadow: 0 0 25px #ff00ff, 0 0 35px #00ffff;
+    }
+
+    h1 {
+      font-size: 2rem;
+      text-align: center;
+      text-shadow: 0 0 10px cyan;
+    }
+
+    select, button {
+      padding: 10px;
+      margin: 10px 0;
+      width: 100%;
+      border-radius: 10px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    button {
+      background: linear-gradient(to right, #ff00ff, #00ffff);
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    .glow {
+      text-align: center;
+      color: #fff;
+      text-shadow: 0 0 10px #ff00ff, 0 0 20px #00ffff;
+    }
+
+    .payment-info {
+      margin: 1rem 0;
+      text-align: center;
+      font-weight: bold;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #00ffff;
+    }
+
+    .qr-image {
+      margin-top: 1rem;
+      max-width: 200px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ff00ff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="glow">DaudzXransom</h1>
+
+    <label for="nominal">Pilih Nominal:</label>
+    <select id="nominal">
+      <option value="10000">Rp10.000</option>
+      <option value="20000">Rp20.000</option>
+      <option value="50000">Rp50.000</option>
+      <option value="100000">Rp100.000</option>
+      <option value="1500000">Rp150.000</option>
+    </select>
+
+    <label for="metode">Metode Pembayaran:</label>
+    <select id="metode" onchange="tampilkanInfo()">
+      <option value="DANA">DANA</option>
+      <option value="OVO">OVO</option>
+      <option value="GOPAY">GoPay</option>
+      <option value="QRIS">QRIS</option>
+    </select>
+
+    <div class="payment-info" id="infoPembayaran">
+      Pilih metode untuk menampilkan info pembayaran.
+    </div>
+
+    <button onclick="kirimTransaksi()">Kirim via WhatsApp</button>
+  </div>
+  
+    <button onclick="section social-links">
+        <h2>Kontak & Social Media</h2>
+        <a href="https://www.instagram.com/daaa_udz?igsh=MW5iaGV4YW1tM3RvdQ=="
+target="_blank">Instagram<a>
+        <a href="https://t.me/udzajaaa"
+target="_blank">Telegram<a>
+
+  <script>
+    const nomorWA = '6285198176546'; // ← Ganti dengan nomor admin kamu
+
+    const dataPembayaran = {
+      DANA: {
+        text: "Nomor DANA: 082336874458",
+      },
+      OVO: {
+        text: "Nomor OVO: 085198176546",
+      },
+      GOPAY: {
+        text: "Nomor GoPay: 085198176546",
+      },
+      QRIS: {
+        text: "Silakan scan QRIS berikut:",
+        img: "https://files.catbox.moe/xd7xlp.jpg" // ← Ganti dengan URL QRIS kamu
+      }
+    };
+
+    function tampilkanInfo() {
+      const metode = document.getElementById("metode").value;
+      const info = dataPembayaran[metode];
+      const infoDiv = document.getElementById("infoPembayaran");
+
+      if (metode === "QRIS") {
+        infoDiv.innerHTML = `${info.text}<br><img class="qr-image" src="${info.img}" alt="QRIS">`;
+      } else {
+        infoDiv.innerHTML = info.text;
+      }
+    }
+
+    function kirimTransaksi() {
+      const nominal = document.getElementById("nominal").value;
+      const metode = document.getElementById("metode").value;
+      let isiPesan = `Halo Admin,\nSaya ingin transfer Rp${nominal} melalui ${metode}.`;
+
+      if (dataPembayaran[metode].text) {
+        isiPesan += `\n${dataPembayaran[metode].text.replace(/<[^>]*>?/gm, '')}`;
+      }
+
+      const linkWA = `https://wa.me/${nomorWA}?text=${encodeURIComponent(isiPesan)}`;
+      window.open(linkWA, "_blank");
+    }
+  </script>
+</body>
+</html>
